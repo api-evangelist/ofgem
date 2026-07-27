@@ -1,0 +1,438 @@
+aid: ofgem
+name: Ofgem
+review:
+  question: What real, public API surface does Ofgem expose, and what energy-data
+    obligation actually applies to it?
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  tier: regulator
+  homeMarket: United Kingdom
+  primaryDomain: ofgem.gov.uk
+  verdict: >
+    Ofgem publishes no API. Every developer-facing host a developer would try -
+    api., developer., developers., docs., data., portal., open., opendata.,
+    dsi., dataexchange., smart..ofgem.gov.uk - fails to resolve. Every
+    developer-facing path on the main site 404s. The Ofgem Data Portal is real
+    and genuinely open, but it is interactive charts with PNG and CSV downloads,
+    plus XLSX workbooks elsewhere on the site - files, not an interface. The two
+    operational registers Ofgem runs are login-gated applications. No OpenAPI,
+    AsyncAPI, GraphQL SDL or Postman collection exists to harvest, so the
+    openapi/ directory was deliberately omitted rather than fabricated. This is a
+    regulator that requires the industry it supervises to publish discoverable,
+    interoperable, presumed-open data, and that requirement is visibly working -
+    NESO ships a public CKAN API, the DNOs run OpenDataSoft portals - while
+    Ofgem itself ships none of it programmatically. That inversion is the finding.
+mandate:
+  regime: smart-meter-infrastructure
+  regimeName: >
+    Great Britain's smart-metering infrastructure mandate. Ofgem grants and
+    regulates the Smart Meter Communication Licence held by Smart DCC Ltd, and
+    oversees the Smart Energy Code that governs access to that network. Ofgem is
+    the ADMINISTRATOR of this regime, not a party subject to a data-sharing
+    obligation under it.
+  status: live-implemented
+  statusEvidence: >
+    The obligation and the implementation were kept as separate facts throughout.
+    What is verified: Ofgem is a live, operating statutory regulator whose data
+    obligations on licensees are in force and documented - Data Best Practice
+    Guidance v1.0 (November 2021) fetched at HTTP 200 from
+    https://www.ofgem.gov.uk/sites/default/files/2021-11/Data_Best_Practice_Guidance_v1.pdf,
+    carrying twelve principles built around treating Energy System Data as
+    presumed open; a live open consultation "Securing open data in energy: triage
+    in Data Best Practice guidance" at HTTP 200; and the Digitalisation programme
+    page at HTTP 200 showing Data Sharing Infrastructure and Data Domain
+    Coordinator consultations open in July 2026. Ofgem also operates a live public
+    register of licensees - the Electronic Public Register at
+    https://epr.ofgem.gov.uk/ returned HTTP 200 on 2026-07-27. So the regime is
+    live and the register exists. What is NOT verified and must not be inferred:
+    nothing about this mandate produces a consumer data API, at Ofgem or anywhere
+    else in GB. "live-implemented" here refers to the infrastructure and
+    licence-obligation regime Ofgem administers. It does NOT mean Ofgem
+    implemented an API. Ofgem implemented no API.
+  notMandated: >
+    There is NO consumer energy data-portability mandate in Great Britain
+    equivalent to the Australian Consumer Data Right (energy) or Ontario's Green
+    Button regulation. Britain mandated the pipe, not the right. cdr-energy was
+    considered and rejected - no CDR, no ACCC-equivalent, no Data Standards Body,
+    no Consumer Data Standards, no CDR register exists for GB energy.
+    green-button-ontario and green-button-voluntary were considered and rejected -
+    no Green Button or ESPI reference appears anywhere on any Ofgem surface probed.
+  inFlightNotYetLive: >
+    A consumer data right for GB energy is being scoped, not delivered. DESNZ
+    published "Developing an energy smart data scheme - a call for evidence"
+    (January 2025) under the Data (Use and Access) Act 2025 smart-data powers, and
+    a consultation was signalled to follow. Ofgem published its Consumer Consent
+    Decision (OFG1164, 29 April 2025, HTTP 200) and a joint DESNZ/Ofgem open letter
+    on a scoping exercise for wider access to smart metering data (HTTP 200).
+    Treat all of this as designated-not-live at the scheme level: a call for
+    evidence and a consent decision are policy work, not an endpoint. No
+    accredited-third-party regime, no register of authorised persons, and no base
+    URI exist today.
+  publicRegisterOfCompliantParties: >
+    Yes for licensing, no for data compliance. Ofgem operates the Electronic
+    Public Register (epr.ofgem.gov.uk) for licences and licence-related documents,
+    and the Renewable Electricity Register (rer.ofgem.gov.uk) for RO, REGO and
+    ROO-FIT accreditation. Neither is a register of API or data-standard
+    conformance, because no such conformance regime exists in GB energy.
+whatOfgemRequiresOfIndustry:
+  obligation: Data Best Practice Guidance, applied as a licence condition
+  detail: >
+    Ofgem's Data Best Practice Guidance v1.0 was published in November 2021 and is
+    applied through licence conditions on network licensees under the RIIO price
+    controls. Its central principle is that Energy System Data is "presumed open" -
+    licensees must publish unless they can justify not publishing via an Open Data
+    Triage. Other principles cover discoverability, interoperability, quality and
+    identifying data stakeholders. Ofgem is consulting (as of 2026) on strengthening
+    the triage step under "Securing open data in energy", citing hostile state actors
+    and AI-driven aggregation as reasons to be more careful about what goes open.
+    Ofgem is separately consulting in July 2026 on Data Sharing Infrastructure and on
+    Data Domain Coordinator role guidance.
+  commencement: >
+    Data Best Practice Guidance v1.0 published November 2021; applied to licensees
+    through RIIO-2 and subsequent licence conditions. Exact per-licensee
+    commencement dates were not stated on the pages probed and are not asserted here.
+  observedEffect: >
+    The obligation is visibly working on the industry even though Ofgem itself
+    publishes nothing programmatically. NESO's public CKAN API at api.neso.energy
+    and the GB DNO open-data portals exist because of this licence condition, and
+    UK Power Networks publishes an explicit maturity framework against Ofgem's Data
+    Best Practice principles. The regulator's rule produced APIs at the regulated
+    parties and none at the regulator.
+dataStandard:
+  standard: no standard reference found
+  detail: >
+    No Green Button, no ESPI, no CDR Consumer Data Standards, no IEC CIM
+    61968/61970, no IEEE 2030.5, no OpenADR, no OCPP or OCPI reference was found on
+    any Ofgem surface probed. Ofgem authors its own non-technical data guidance
+    (Data Best Practice Guidance v1.0) which sets principles - presumed open,
+    discoverable, interoperable - without naming an energy-sector data model or wire
+    format. Published data is delivered in CSV, XLSX and PNG. The Electronic Public
+    Register's undocumented backend speaks GraphQL, which is a query language and
+    not an energy data standard.
+dataSplit:
+  marketDataOpen: true
+  marketDataDetail: >
+    Open, but as files rather than as an interface. The Ofgem Data Portal
+    (https://www.ofgem.gov.uk/news-and-insight/data/data-portal, HTTP 200) publishes
+    interactive charts across four themes - Retail Market Indicators, Wholesale
+    Market Indicators, Energy Network Indicators and Customer Service Data - and
+    every chart offers a PNG image and a raw .csv download. No login, no key, no
+    account, no licence click-through. Ofgem also publishes an upcoming data release
+    calendar (HTTP 200), energy price cap levels and the levelised cap rates model as
+    XLSX, FIT quarterly statistics and installation reports as Excel, and REGO fuel
+    mix disclosure snapshots. All anonymous. None of it has an API, a stable
+    machine-readable index, or a bulk endpoint. The all-available-charts page was
+    downloaded (187,563 bytes) and grepped for /api, .json, swagger and openapi
+    references - zero matches.
+  consumerDataApi: false
+  consumerDataDetail: >
+    Zero, and structurally so. Ofgem is a regulator - it holds no retail customer
+    relationships, no meters and no consumption records, so there is no individual
+    customer usage or billing data for a third party to obtain. There is no consent
+    flow, no accredited-recipient scheme and no eligibility API. In GB, individual
+    consumption data moves through the licensed Smart DCC monopoly and licensed
+    suppliers, and the API-native retail surface in this market is Octopus Energy's
+    Kraken platform, not the regulator.
+  theFinding: >
+    A regulator that mandates open data for the industry, publishes its own market
+    data openly but only as spreadsheets, and ships no API at all - while the
+    licensees it regulates ship real ones. Britain's mandate created APIs one layer
+    down from the body that wrote the rule.
+accessGate:
+  gate: none-published
+  whatADeveloperMustDo: >
+    There is nothing a developer can do, because there is nothing published to
+    apply for. No developer portal exists. No API key request form exists. No
+    application-approval route, no accreditation scheme, no data licence agreement
+    and no partner programme for API access exists. A developer's only options are:
+    download CSV and XLSX files anonymously from ofgem.gov.uk, or email
+    ofgemdataservices@ofgem.gov.uk. The Data Exchange Service is the single Ofgem
+    system that mentions an API, and it is inbound-only, invitation-only and in
+    Beta - Ofgem states it is "individually contacting data providers asking them to
+    start using the Data Exchange", offers "the option to automate the uploading of
+    these files for regular submissions, including via API", and publishes no
+    endpoint, no host, no contract and no self-service route. It is for licensed
+    parties submitting returns TO the regulator, not for consuming data from it.
+  gated: true
+  gatedDetail: >
+    The open market data is not gated - it is just not an API. What is gated is
+    everything transactional: both operational registers require an account, and the
+    only API-shaped surface (Data Exchange) requires an invitation.
+authModel:
+  publicApiAuth: none - no public API exists to authenticate against
+  registerAuth:
+  - system: Electronic Public Register (epr.ofgem.gov.uk)
+    scheme: OAuth 2.0 authorization code with PKCE, backed by AWS Cognito
+    detail: >
+      Configuration read directly from the site's own JavaScript bundle
+      (/ofgem-live-v4.20.31-28588873106-3-1/index.js, HTTP 200, 2,576,139 bytes).
+      authorizationEndpoint https://epre-api.ofgem.gov.uk/authenticate/,
+      tokenEndpoint https://epre-api.ofgem.gov.uk/tokens/, redirectUri
+      https://epr.ofgem.gov.uk, clientId 55o2cl3csa5ab7rctka6de5rvp, scope
+      "openid profile email", logoutEndpoint
+      https://ofgem-live-portal.auth.eu-west-2.amazoncognito.com/logout. Bearer
+      token held client-side under the ROCP_token key. No OIDC discovery document
+      is served - the Cognito domain returned HTTP 404 for
+      /.well-known/openid-configuration.
+  - system: Renewable Electricity Register (rer.ofgem.gov.uk)
+    scheme: OpenID Connect authorization code with PKCE, via Azure AD B2C
+    detail: >
+      Every RER path probed, including /public-reports, 302-redirected to
+      https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/oauth2/v2.0/authorize
+      with client_id 05624aa9-bc87-4076-88c3-fd451bb29006, response_type=code,
+      code_challenge_method=S256 and scope "openid profile offline_access
+      https://pk8sprdofgemcloudb2c.onmicrosoft.com/rercoreservices/user_impersonation".
+      The RER is entirely customer-account-required - even the pages Ofgem describes
+      as "public reports" are behind the sign-in.
+  wellKnownProbe: >
+    https://www.ofgem.gov.uk/.well-known/openid-configuration -> HTTP 404.
+    https://www.ofgem.gov.uk/.well-known/ai-plugin.json -> HTTP 404.
+    https://www.ofgem.gov.uk/.well-known/ -> HTTP 404.
+    https://ofgem-live-portal.auth.eu-west-2.amazoncognito.com/.well-known/openid-configuration
+    -> HTTP 404. The only .well-known document served is security.txt (HTTP 200),
+    pointing at a HackerOne embedded submission form and
+    https://www.ofgem.gov.uk/report-vulnerability.
+undocumentedSurfaces:
+- host: https://epre-api.ofgem.gov.uk/graphql/
+  observed: >
+    Real and anonymously reachable, but entirely undocumented. Discovered by
+    reading the Electronic Public Register SPA bundle, which sets
+    VITE_API_BASE=https://epre-api.ofgem.gov.uk/ and
+    VITE_API_GRAPHQL_PATH=graphql/. An anonymous POST of {"query":"{__typename}"}
+    returned HTTP 200 with {"data":{"__typename":"Query"}} on 2026-07-27. A GET
+    returns HTTP 405. Schema introspection is DISABLED - {__schema{queryType{name}}}
+    returned "GraphQL introspection has been disabled". A sibling REST base exists
+    at https://epre-api.ofgem.gov.uk/restapi/ but returned HTTP 404 on every
+    unauthenticated path tried.
+  decision: >
+    NOT listed in apis.yml. It is an application backend, not a product: Ofgem
+    publishes no schema, no reference, no terms of use, no rate limits and no
+    versioning promise for it, and introspection is off so no contract could be
+    harvested. Recording it here as an observed fact is honest; listing it as a
+    public API would not be.
+- host: Ofgem Data Exchange Service
+  observed: >
+    Ofgem's guidance page (HTTP 200) states the Beta service supports automated
+    file submission "including via API". No hostname is published;
+    dataexchange.ofgem.gov.uk does not resolve. Contact given as
+    ofgemdataservices@ofgem.gov.uk.
+  decision: NOT listed - inbound, invitation-only, no published endpoint or contract.
+- host: https://github.com/ofgem
+  observed: >
+    A GitHub organisation named "ofgem" exists (HTTP 200) with exactly one public
+    repository, ofgem/sde-prototypes ("SDE ui-prototypes", JavaScript, last updated
+    2019-02-24). The organisation carries no display name, description, blog URL or
+    verified domain.
+  decision: >
+    NOT listed in apis.yml. Attribution to the regulator could not be verified from
+    the org metadata, the repository is seven years stale, and it contains no API
+    artifacts.
+probes:
+  date: '2026-07-27'
+  method: anonymous curl, no cookies, no credentials, browser user-agent, redirects followed
+  results:
+  - url: https://www.ofgem.gov.uk/
+    status: 200
+    note: Corporate site, Drupal.
+  - url: https://ofgem.gov.uk/
+    status: 200
+    note: Redirects to www.
+  - url: https://api.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://developer.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://developers.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://docs.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://data.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://portal.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://open.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://opendata.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://dsi.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://dataexchange.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://smart.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://dataportal.ofgem.gov.uk/
+    status: 000
+    note: Does not resolve.
+  - url: https://www.ofgem.gov.uk/developers
+    status: 404
+  - url: https://www.ofgem.gov.uk/api
+    status: 404
+  - url: https://www.ofgem.gov.uk/api/v1
+    status: 404
+  - url: https://www.ofgem.gov.uk/api-docs
+    status: 404
+  - url: https://www.ofgem.gov.uk/api/openapi.json
+    status: 404
+  - url: https://www.ofgem.gov.uk/data
+    status: 404
+  - url: https://www.ofgem.gov.uk/openapi.json
+    status: 404
+  - url: https://www.ofgem.gov.uk/swagger.json
+    status: 404
+  - url: https://www.ofgem.gov.uk/jsonapi
+    status: 404
+    note: Drupal JSON:API module not enabled.
+  - url: https://www.ofgem.gov.uk/jsonapi/node/page
+    status: 404
+  - url: https://www.ofgem.gov.uk/graphql
+    status: 404
+  - url: https://www.ofgem.gov.uk/rest
+    status: 404
+  - url: https://www.ofgem.gov.uk/llms.txt
+    status: 404
+  - url: https://www.ofgem.gov.uk/.well-known/openid-configuration
+    status: 404
+  - url: https://www.ofgem.gov.uk/.well-known/security.txt
+    status: 200
+    note: HackerOne embedded submission endpoint plus /report-vulnerability policy.
+  - url: https://www.ofgem.gov.uk/robots.txt
+    status: 200
+    note: Standard Drupal robots.txt. No API or sitemap hints beyond core paths.
+  - url: https://www.ofgem.gov.uk/sitemap.xml
+    status: 200
+  - url: https://www.ofgem.gov.uk/news-and-insight/data
+    status: 200
+    note: Data landing page. Links the Data Portal and epr.ofgem.gov.uk. No API mention.
+  - url: https://www.ofgem.gov.uk/news-and-insight/data/data-portal
+    status: 200
+    note: Interactive charts across retail, wholesale, networks and customer service.
+      Downloads are PNG image and .csv only. No API, no feed, no machine-readable index.
+  - url: https://www.ofgem.gov.uk/news-and-insight/data/data-portal/all-available-charts
+    status: 200
+    note: 187,563 bytes downloaded and grepped - zero occurrences of /api, .json,
+      swagger or openapi.
+  - url: https://www.ofgem.gov.uk/data/ofgem-data-upcoming-release-calendar
+    status: 200
+  - url: https://www.ofgem.gov.uk/guidance/we-are-launching-our-new-data-exchange-service
+    status: 200
+    note: Data Exchange Beta. Inbound industry submissions, CSV upload, "option to
+      automate ... including via API", invitation-only, no endpoint published.
+  - url: https://www.ofgem.gov.uk/energy-regulation/technology-and-innovation/digitalisation
+    status: 200
+    note: Data Best Practice, Data Sharing Infrastructure and Data Domain Coordinator
+      consultations open July 2026.
+  - url: https://www.ofgem.gov.uk/consultation/securing-open-data-energy-triage-data-best-practice-guidance
+    status: 200
+  - url: https://www.ofgem.gov.uk/sites/default/files/2021-11/Data_Best_Practice_Guidance_v1.pdf
+    status: 200
+    note: Data Best Practice Guidance v1.0, November 2021. Twelve principles, presumed open.
+  - url: https://www.ofgem.gov.uk/transparency-document/open-letter-desnz-and-ofgem-scoping-exercise-provision-wider-access-smart-metering-data
+    status: 200
+  - url: https://www.ofgem.gov.uk/sites/default/files/2025-04/Consumer_Consent_Decision.pdf
+    status: 200
+    note: Ofgem Consumer Consent Decision OFG1164, 29 April 2025.
+  - url: https://www.ofgem.gov.uk/energy-regulation/domestic-and-non-domestic/energy-pricing-rules/energy-price-cap
+    status: 200
+    note: Price cap levels and levelised cap rates model published as XLSX.
+  - url: https://www.ofgem.gov.uk/feed-tariffs-fit/contacts-guidance-and-resources/public-reports-and-data-fit
+    status: 200
+    note: FIT installation reports published as Excel.
+  - url: https://www.ofgem.gov.uk/public-reports-and-data-rego
+    status: 200
+    note: REGO fuel mix disclosure and recognised GoO reports. Points at the RER for
+      accredited station detail.
+  - url: https://www.ofgem.gov.uk/about-us
+    status: 200
+  - url: https://www.ofgem.gov.uk/rss.xml
+    status: 200
+    content-type: application/rss+xml
+  - url: https://www.ofgem.gov.uk/blog
+    status: 200
+  - url: https://www.ofgem.gov.uk/publications
+    status: 200
+  - url: https://www.ofgem.gov.uk/report-vulnerability
+    status: 200
+  - url: https://epr.ofgem.gov.uk/
+    status: 200
+    note: Electronic Public Register. React SPA shell of 606 bytes.
+  - url: https://epr.ofgem.gov.uk/api
+    status: 200
+    note: FALSE POSITIVE - returns the identical 606-byte SPA shell, not an API.
+  - url: https://epr.ofgem.gov.uk/swagger/index.html
+    status: 200
+    note: FALSE POSITIVE - returns the identical 606-byte SPA shell, not Swagger UI.
+      Confirmed by byte-for-byte comparison with the site root.
+  - url: https://epre-api.ofgem.gov.uk/
+    status: 200
+    note: AWS Cognito hosted sign-in page, 8,774 bytes.
+  - url: https://epre-api.ofgem.gov.uk/graphql/
+    status: 200
+    note: Anonymous POST {"query":"{__typename}"} returned
+      {"data":{"__typename":"Query"}}. Introspection disabled. Undocumented.
+  - url: https://epre-api.ofgem.gov.uk/swagger/v1/swagger.json
+    status: 404
+  - url: https://epre-api.ofgem.gov.uk/openapi.json
+    status: 404
+  - url: https://epre-api.ofgem.gov.uk/swagger.json
+    status: 404
+  - url: https://epre-api.ofgem.gov.uk/api-docs
+    status: 404
+  - url: https://epre-api.ofgem.gov.uk/restapi/
+    status: 404
+  - url: https://rer.ofgem.gov.uk/
+    status: 200
+    note: Renewable Electricity Register. Redirects to Azure AD B2C sign-in.
+  - url: https://rer.ofgem.gov.uk/public-reports
+    status: 200
+    note: Redirects to Azure AD B2C sign-in - the "public reports" are not anonymous.
+  - url: https://rer.ofgem.gov.uk/swagger/v1/swagger.json
+    status: 200
+    note: FALSE POSITIVE - redirects to the B2C sign-in page, no spec.
+  - url: https://data.gov.uk/api/3/action/organization_show?id=ofgem
+    status: 200
+    note: The Ofgem publisher exists on data.gov.uk with package_count 0 - Ofgem
+      publishes no datasets there.
+  - url: https://api.github.com/orgs/ofgem
+    status: 200
+    note: 1 public repo, ofgem/sde-prototypes, last updated 2019-02-24. Unverified
+      attribution.
+artifacts:
+  openapiHarvested: false
+  specsCount: 0
+  reason: >
+    No OpenAPI, Swagger, AsyncAPI, GraphQL SDL, Postman collection or JSON Schema
+    document was found on any Ofgem host. Every /openapi.json, /swagger.json,
+    /api-docs and /swagger/v1/swagger.json probe either 404ed or resolved to an SPA
+    shell or a sign-in redirect. GraphQL introspection is disabled on the one live
+    backend found. The openapi/ directory was therefore omitted rather than filled
+    with anything invented or reconstructed.
+sources:
+- url: https://www.ofgem.gov.uk/about-us
+  type: About
+  note: Non-ministerial government department, Great Britain, powers from government
+    energy policy and the Energy Act 2023.
+- url: https://www.ofgem.gov.uk/news-and-insight/data/data-portal
+  type: Portal
+  note: The only public data product. Charts, PNG and CSV. No API.
+- url: https://www.ofgem.gov.uk/sites/default/files/2021-11/Data_Best_Practice_Guidance_v1.pdf
+  type: Documentation
+  note: The obligation Ofgem places on licensees. Presumed open Energy System Data.
+- url: https://www.ofgem.gov.uk/guidance/we-are-launching-our-new-data-exchange-service
+  type: Documentation
+  note: The only Ofgem system that mentions an API. Inbound, Beta, invitation-only.
+- url: https://epr.ofgem.gov.uk/
+  type: Registry
+  note: Electronic Public Register. SPA over an undocumented GraphQL backend.
+- url: https://rer.ofgem.gov.uk/
+  type: Registry
+  note: Renewable Electricity Register for RO, REGO and ROO-FIT. Fully login-gated.

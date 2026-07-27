@@ -1,0 +1,79 @@
+aid: ofgem
+url: https://raw.githubusercontent.com/api-evangelist/ofgem/refs/heads/main/apis.yml
+name: Ofgem
+kind: company
+description: >-
+  Ofgem, the Office of Gas and Electricity Markets, is the non-ministerial government
+  department that regulates the gas and electricity markets of Great Britain (England,
+  Scotland and Wales), drawing its powers from the Gas Act 1986, the Electricity Act 1989
+  and the Energy Act 2023. It licenses the companies that make, transport and sell energy,
+  sets the price cap, runs the RIIO network price controls, administers environmental and
+  social schemes such as the Renewables Obligation, REGO and Feed-in Tariffs on behalf of
+  government, grants and supervises the Smart Meter Communication Licence held by the Smart
+  DCC, and imposes the Data Best Practice licence obligation that requires network licensees
+  to treat Energy System Data as presumed open. It sits above the value chain rather than in
+  it - it holds no customers, no meters and no wires. Its own API posture is the plain
+  finding: Ofgem publishes NO API of any kind. There is no developer portal, no api., docs.,
+  data. or developer. subdomain, no OpenAPI, no CKAN endpoint. Market data is genuinely open
+  but delivered as chart images, CSV and XLSX file downloads from the Ofgem Data Portal;
+  consumer data does not exist here at all, because Great Britain mandated the smart-meter
+  INFRASTRUCTURE rather than a consumer data right, and no CDR-equivalent obligation binds
+  either Ofgem or the suppliers it licenses. Ofgem's two operational registers - the
+  Electronic Public Register and the Renewable Electricity Register - are login-gated
+  applications whose backends are undocumented and unpublished. Ofgem is therefore a
+  regulator that demands open, discoverable, interoperable data from the industry it
+  supervises while shipping none of it programmatically itself.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+tags:
+- Energy
+- United Kingdom
+- Utilities
+- Electricity
+- Gas
+- Energy Markets
+- Regulator
+- Smart Metering
+- Open Data
+- Energy Regulation
+- Renewables
+- Great Britain
+created: '2026-07-27'
+modified: '2026-07-27'
+specificationVersion: '0.19'
+apis: []
+common:
+- type: Website
+  url: https://www.ofgem.gov.uk/
+- type: About
+  url: https://www.ofgem.gov.uk/about-us
+- type: Portal
+  url: https://www.ofgem.gov.uk/news-and-insight/data/data-portal
+- type: Documentation
+  url: https://www.ofgem.gov.uk/news-and-insight/data
+- type: Documentation
+  url: https://www.ofgem.gov.uk/data/ofgem-data-upcoming-release-calendar
+- type: Documentation
+  url: https://www.ofgem.gov.uk/energy-regulation/technology-and-innovation/digitalisation
+- type: Documentation
+  url: https://www.ofgem.gov.uk/sites/default/files/2021-11/Data_Best_Practice_Guidance_v1.pdf
+- type: Registry
+  url: https://epr.ofgem.gov.uk/
+- type: Registry
+  url: https://rer.ofgem.gov.uk/
+- type: VulnerabilityDisclosure
+  url: https://www.ofgem.gov.uk/report-vulnerability
+- type: SecurityTxt
+  url: https://www.ofgem.gov.uk/.well-known/security.txt
+- type: News
+  url: https://www.ofgem.gov.uk/news-and-insight
+- type: Blog
+  url: https://www.ofgem.gov.uk/blog
+- type: BlogRSS
+  url: https://www.ofgem.gov.uk/rss.xml
+- type: Publications
+  url: https://www.ofgem.gov.uk/publications
+- type: LinkedIn
+  url: https://www.linkedin.com/company/ofgem
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
