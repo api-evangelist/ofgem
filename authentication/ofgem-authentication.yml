@@ -1,0 +1,81 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  Live anonymous probes and the two register applications' own published JavaScript
+  configuration, 2026-07-27. No OpenAPI exists for this provider, so nothing here is
+  derived from a specification.
+docs: null
+summary:
+  public_api_auth: none
+  public_api_auth_detail: >-
+    Ofgem publishes no API, so there is no public authentication model, no key
+    request route, no client registration and no token endpoint a developer may use.
+    Everything below describes the identity layer in front of Ofgem's two internal
+    register applications, discovered by probing - not a developer-facing contract.
+  types: [oauth2, openIdConnect]
+  api_key_in: []
+  oauth2_flows: [authorizationCode]
+  pkce: true
+  discovery_documents: 1
+schemes:
+- name: EPR (Electronic Public Register) - AWS Cognito
+  application: https://epr.ofgem.gov.uk/
+  type: oauth2
+  flow: authorizationCode
+  pkce: true
+  authorizationUrl: https://epre-api.ofgem.gov.uk/authenticate/
+  tokenUrl: https://epre-api.ofgem.gov.uk/tokens/
+  logoutUrl: https://ofgem-live-portal.auth.eu-west-2.amazoncognito.com/logout
+  redirectUri: https://epr.ofgem.gov.uk
+  clientId: 55o2cl3csa5ab7rctka6de5rvp
+  scopes: [openid, profile, email]
+  token_storage: browser storage key ROCP_token (bearer, client-side)
+  discovery: >-
+    None served. https://ofgem-live-portal.auth.eu-west-2.amazoncognito.com/.well-known/openid-configuration
+    returned 404 and the user-pool issuer is not published, so no OIDC metadata is
+    obtainable for this application.
+  source: https://epr.ofgem.gov.uk/ofgem-live-v4.20.31-28588873106-3-1/index.js
+  anonymous_read_note: >-
+    Authentication is not enforced on all of the backing GraphQL endpoint - several
+    read operations return real register content anonymously (see
+    graphql/ofgem-epr-graphql.yml). Sign-in gates the licence-modification proposal
+    workflow and user-scoped data.
+- name: RER (Renewable Electricity Register) - Azure AD B2C
+  application: https://rer.ofgem.gov.uk/
+  type: openIdConnect
+  flow: authorizationCode
+  pkce: true
+  code_challenge_method: S256
+  openIdConnectUrl: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/v2.0/.well-known/openid-configuration
+  discovery_file: well-known/ofgem-rer-openid-configuration.json
+  issuer: https://pk8sprdofgemcloudb2c.b2clogin.com/66336e89-d63b-4197-98af-792db50aa4aa/v2.0/
+  authorizationUrl: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/oauth2/v2.0/authorize
+  tokenUrl: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/oauth2/v2.0/token
+  endSessionUrl: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/oauth2/v2.0/logout
+  jwksUrl: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/discovery/v2.0/keys
+  user_flow: b2c_1a_rer_signin (custom policy)
+  clientId: 05624aa9-bc87-4076-88c3-fd451bb29006
+  scopes: [openid, profile, offline_access, 'https://pk8sprdofgemcloudb2c.onmicrosoft.com/rercoreservices/user_impersonation']
+  id_token_signing_alg: [RS256]
+  token_endpoint_auth_methods: [client_secret_post, client_secret_basic]
+  subject_types: [pairwise]
+  anonymous_read_note: >-
+    None. Every RER path probed, including the pages Ofgem calls "public reports",
+    302-redirects to the B2C sign-in. The register is entirely account-gated.
+  source: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/v2.0/.well-known/openid-configuration
+open_data_access:
+  gate: none
+  detail: >-
+    The Ofgem Data Portal, the price-cap workbooks, the FIT and REGO reports and the
+    data release calendar are all anonymous file downloads (CSV, XLSX, PNG). No
+    account, no key, no licence click-through and no rate limit applies - and no
+    interface either.
+inbound_only_surface:
+  name: Ofgem Data Exchange Service (Beta)
+  direction: inbound (industry submits returns to Ofgem)
+  auth: not published
+  access: invitation only; contact ofgemdataservices@ofgem.gov.uk
+  note: >-
+    Ofgem's guidance page states the Beta supports automating file submission
+    "including via API" but publishes no hostname, contract or self-service route;
+    dataexchange.ofgem.gov.uk does not resolve.

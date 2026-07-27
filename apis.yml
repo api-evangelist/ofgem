@@ -23,7 +23,7 @@ description: >-
   applications whose backends are undocumented and unpublished. Ofgem is therefore a
   regulator that demands open, discoverable, interoperable data from the industry it
   supervises while shipping none of it programmatically itself.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+image: https://www.ofgem.gov.uk/sites/default/files/styles/uncropped_large/public/2021-06/ofgem-logo.jpg
 tags:
 - Energy
 - United Kingdom
@@ -42,6 +42,24 @@ modified: '2026-07-27'
 specificationVersion: '0.19'
 apis: []
 common:
+- type: VulnerabilityDisclosure
+  url: security/ofgem-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/ofgem-domain-security.yml
+- type: Security
+  url: https://www.ofgem.gov.uk/report-vulnerability
+- type: WellKnown
+  url: well-known/ofgem-well-known.yml
+- type: Authentication
+  url: authentication/ofgem-authentication.yml
+- type: OAuthScopes
+  url: scopes/ofgem-scopes.yml
+- type: Conformance
+  url: conformance/ofgem-conformance.yml
+- type: Lifecycle
+  url: lifecycle/ofgem-lifecycle.yml
+- type: LLMsTxt
+  url: llms/ofgem-llms.txt
 - type: Website
   url: https://www.ofgem.gov.uk/
 - type: About
@@ -74,6 +92,18 @@ common:
   url: https://www.ofgem.gov.uk/publications
 - type: LinkedIn
   url: https://www.linkedin.com/company/ofgem
+- type: Support
+  url: https://www.ofgem.gov.uk/about-us/get-in-touch/contact-us
+- type: PrivacyPolicy
+  url: https://www.ofgem.gov.uk/ofgem-privacy-policy
+- type: Cookies
+  url: https://www.ofgem.gov.uk/cookies
+- type: Accessibility
+  url: https://www.ofgem.gov.uk/website-accessibility
+- type: Consultations
+  url: https://www.ofgem.gov.uk/consultations
+- type: Guidance
+  url: https://www.ofgem.gov.uk/guidance/we-are-launching-our-new-data-exchange-service
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

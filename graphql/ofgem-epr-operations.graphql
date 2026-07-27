@@ -1,0 +1,1127 @@
+# Ofgem Electronic Public Register - client GraphQL operation documents
+#
+# generated: 2026-07-27
+# method: derived
+# source: https://epr.ofgem.gov.uk/ofgem-live-v4.20.31-28588873106-3-1/index.js
+#         (public single-page-application bundle, 2,576,139 bytes, HTTP 200)
+# endpoint: https://epre-api.ofgem.gov.uk/graphql/
+#
+# THIS IS NOT AN OFGEM-PUBLISHED API CONTRACT. Ofgem publishes no schema, no
+# reference documentation, no terms of use, no rate limits and no versioning
+# promise for this endpoint, and server-side introspection is disabled
+# ("GraphQL introspection has been disabled" on {__schema{queryType{name}}},
+# verified 2026-07-27). These 72 operation documents are the client-side query
+# and mutation strings extracted verbatim from Ofgem's own public JavaScript
+# bundle - what the Electronic Public Register web app actually sends. No field,
+# type, argument or operation below was invented; the SDL itself remains
+# unobtainable because introspection is off.
+#
+# Anonymous reachability (verified 2026-07-27, anonymous POST, no cookies):
+#   {__typename}                      -> 200 {"data":{"__typename":"Query"}}
+#   query GetCollectionsAndPublications -> 200, returns 12 real licence collections
+#   query GetAnnouncements            -> 200, returns real licensing notices
+#   query GetCurrentUser              -> 200, empty strings (no session)
+#   query GetPublicationFilters       -> 200 with {"error_code":"Server error"}
+# Mutations were NOT executed.
+
+query GetSearchableMetadataFields($collectionIds: [UUID!]) {
+  searchableMetadataFields(collectionIds: $collectionIds) {
+    key
+    items {
+      count
+      value
+    }
+  }
+}
+
+query GetSearchData($collectionIds: [UUID!], $publicationIds: [UUID!], $term: String, $parentWorkId: UUID, $asOfTime: DateTime, $limit: Int, $offset: Int, $sortOrder: String, $metadata: [SearchMetadataInput], $lastChangedStart: DateTime, $lastChangedEnd: DateTime, $excludeFolders: Boolean) {
+  search(
+    term: $term
+    publicationIds: $publicationIds
+    collectionIds: $collectionIds
+    parentWorkId: $parentWorkId
+    asOfTime: $asOfTime
+    limit: $limit
+    offset: $offset
+    sortOrder: $sortOrder
+    metadataFields: $metadata
+    excludeFolders: $excludeFolders
+    lastChangedStart: $lastChangedStart
+    lastChangedEnd: $lastChangedEnd
+  ) {
+    count
+    suggestions
+    items {
+      highlights
+      placement {
+        id
+        name
+        documentPath
+        supplementaryFileExtension
+        isAmendment
+        isAmendmentComponent
+        amendmentName
+        collection {
+          label
+          id
+        }
+        publication {
+          id
+          name
+        }
+        operationalPeriod {
+          start
+          end
+        }
+        workVariant {
+          metadata {
+            key
+            values
+          }
+        }
+      }
+    }
+  }
+}
+
+query GetSearchFacets($term: String, $asOfTime: DateTime, $publicationIds: [UUID!], $metadata: [SearchMetadataInput]) {
+  search(
+    asOfTime: $asOfTime
+    term: $term
+    publicationIds: $publicationIds
+    metadataFields: $metadata
+  ) {
+    facets {
+      collections {
+        key
+        count
+      }
+      publications {
+        key
+        count
+      }
+      metadata {
+        label
+        entries {
+          key
+          count
+        }
+      }
+    }
+  }
+}
+
+query GetSearchByPublicationCount($collectionIds: [UUID!], $publicationIds: [UUID!], $term: String, $asOfTime: DateTime, $limit: Int, $offset: Int, $sortOrder: String, $metadata: [SearchMetadataInput], $lastChangedStart: DateTime, $lastChangedEnd: DateTime, $excludeFolders: Boolean) {
+  search(
+    term: $term
+    publicationIds: $publicationIds
+    collectionIds: $collectionIds
+    asOfTime: $asOfTime
+    limit: $limit
+    offset: $offset
+    sortOrder: $sortOrder
+    metadataFields: $metadata
+    lastChangedStart: $lastChangedStart
+    lastChangedEnd: $lastChangedEnd
+    excludeFolders: $excludeFolders
+  ) {
+    count
+  }
+}
+
+query GetSearchByWorkCount($collectionIds: [UUID!], $publicationIds: [UUID!], $term: String, $parentWorkId: UUID, $asOfTime: DateTime, $limit: Int, $offset: Int, $sortOrder: String, $metadata: [SearchMetadataInput], $lastChangedStart: DateTime, $lastChangedEnd: DateTime, $excludeFolders: Boolean) {
+  search(
+    term: $term
+    publicationIds: $publicationIds
+    collectionIds: $collectionIds
+    parentWorkId: $parentWorkId
+    asOfTime: $asOfTime
+    limit: $limit
+    offset: $offset
+    sortOrder: $sortOrder
+    metadataFields: $metadata
+    lastChangedStart: $lastChangedStart
+    lastChangedEnd: $lastChangedEnd
+    excludeFolders: $excludeFolders
+  ) {
+    count
+  }
+}
+
+query GetCollectionsAndPublications {
+  collections {
+    count
+    items {
+      id
+      label
+      publications(orderBy: "name") {
+        items {
+          id
+          name
+          lastPublishedDate
+          isDraft
+          timezone
+        }
+      }
+    }
+  }
+}
+
+query GetTocNodes($asOfTime: DateTime, $parentPlacementId: UUID, $publicationId: UUID!, $selectedPlacementId: UUID, $limit: Int, $offset: Int, $structuralNodeLimit: Int) {
+  tocNodesPaginated(
+    asOfTime: $asOfTime
+    parentPlacementId: $parentPlacementId
+    publicationId: $publicationId
+    selectedPlacementId: $selectedPlacementId
+    limit: $limit
+    offset: $offset
+    structuralNodeLimit: $structuralNodeLimit
+  ) {
+    count
+    items {
+      id
+      parentId
+      name
+      isSuperseded
+      supplementaryFileExtension
+      nodeType
+      futureEffectiveDate
+      children(limit: $limit) {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetTocSearchNodes($asOfTime: DateTime, $parentPlacementId: UUID, $publicationId: UUID!, $limit: Int, $offset: Int, $searchTerm: String!) {
+  tocSearchNodesPaginated(
+    asOfTime: $asOfTime
+    parentPlacementId: $parentPlacementId
+    publicationId: $publicationId
+    limit: $limit
+    offset: $offset
+    searchTerm: $searchTerm
+  ) {
+    count
+    highlightCount
+    items {
+      id
+      parentId
+      name
+      isSuperseded
+      supplementaryFileExtension
+      nodeType
+      children {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetCurrentUser {
+  currentUser {
+    firstName
+    lastName
+    email
+    language
+    welcomeMessage
+    organisation {
+      id
+      name
+    }
+  }
+}
+
+query GetSubscribedPlacements($publicationId: UUID!) {
+  subscriptionsWorkInfo(publicationId: $publicationId) {
+    workVariantPlacementId
+  }
+}
+
+query GetSubscriptions {
+  subscriptions {
+    items {
+      id
+      isUnread
+      location
+      publication {
+        id
+        name
+      }
+      documentContainerPair {
+        container {
+          id
+        }
+        previousContainer {
+          id
+        }
+      }
+      collection {
+        id
+        label
+      }
+      eventType
+      eventDate
+      id
+      workVariantPlacement {
+        name
+        id
+        publicationParent {
+          name
+          id
+        }
+        isSupplementaryFile
+        supplementaryFileExtension
+        operationalPeriod {
+          start
+        }
+      }
+      previousWorkVariantPlacement {
+        name
+        id
+        isSupplementaryFile
+        supplementaryFileExtension
+        operationalPeriod {
+          start
+        }
+        publicationParent {
+          name
+          id
+        }
+      }
+    }
+  }
+}
+
+mutation UpdateUserLanguage($language: String) {
+  updateUserLanguage(language: $language)
+}
+
+query GetProposalDashboard($collectionIds: [UUID!], $publicationIds: [UUID!], $limit: Int, $offset: Int, $sortField: String, $sortOrder: String, $filters: String) {
+  proposalsDashboard(
+    collectionIds: $collectionIds
+    publicationIds: $publicationIds
+    limit: $limit
+    offset: $offset
+    sortField: $sortField
+    sortOrder: $sortOrder
+    filters: $filters
+  ) {
+    count
+    items {
+      ...ProposalDashboardFields
+    }
+  }
+}
+    ${xIe}
+
+query GetAnnouncements($limit: Int, $offset: Int, $filters: String, $sortOrder: String, $sortField: String, $collectionIds: [String!], $publicationIds: [String!], $operationalPeriodStart: DateTime, $operationalPeriodEnd: DateTime) {
+  announcements(
+    limit: $limit
+    offset: $offset
+    filters: $filters
+    sortOrder: $sortOrder
+    sortField: $sortField
+    collectionIds: $collectionIds
+    publicationIds: $publicationIds
+    operationalPeriodStartGte: $operationalPeriodStart
+    operationalPeriodStartLte: $operationalPeriodEnd
+  ) {
+    items {
+      id: uuid
+      name
+      changeType
+      operationalPeriodStart
+      fileType
+      collectionId
+      collectionLabel
+      publicationId
+      publicationName
+      previousWorkVariantPlacement {
+        id
+      }
+      metadata {
+        key
+        values
+      }
+    }
+    count
+  }
+}
+
+query GetDatagridFolderItems($asOfTime: DateTime, $parentPlacementId: UUID, $publicationId: UUID!, $limit: Int, $offset: Int) {
+  tocNodesPaginated(
+    asOfTime: $asOfTime
+    parentPlacementId: $parentPlacementId
+    publicationId: $publicationId
+    limit: $limit
+    offset: $offset
+  ) {
+    count
+    items {
+      id
+      parentId
+      name
+      supplementaryFileExtension
+      nodeType
+    }
+  }
+}
+
+query GetSearchDatagridFolderItems($asOfTime: DateTime, $publicationId: UUID!, $searchTerm: String!, $limit: Int, $offset: Int, $parentPlacementId: UUID) {
+  tocSearchNodesPaginated(
+    asOfTime: $asOfTime
+    publicationId: $publicationId
+    searchTerm: $searchTerm
+    limit: $limit
+    offset: $offset
+    parentPlacementId: $parentPlacementId
+  ) {
+    count
+    limit
+    offset
+    items {
+      id
+      parentId
+      name
+      supplementaryFileExtension
+      nodeType
+    }
+  }
+}
+
+query GetFolderFilesInfo($parentPlacementId: UUID!) {
+  folderFilesInfo(parentPlacementId: $parentPlacementId) {
+    hasSupplementaryFiles
+    supplementaryFilesCount
+  }
+}
+
+query GetSupplementaryFilesDownloadUrl($parentPlacementId: UUID!) {
+  supplementaryFilesDownloadURL(parentPlacementId: $parentPlacementId) {
+    url
+  }
+}
+
+mutation DownloadFilesFromFolder($parentPlacementId: UUID!) {
+  downloadFilesFromFolder(parentPlacementId: $parentPlacementId) {
+    uuid
+    status
+  }
+}
+
+mutation CancelSupplementaryFilesDownload($downloadId: UUID!) {
+  cancelDownloadFilesFromFolder(downloadId: $downloadId) {
+    uuid
+    status
+  }
+}
+
+fragment ChangeProposalFields on Proposal {
+  id
+  name
+  proposalNumber
+  proposalSupportingComment
+  proposalStatus
+  lastUpdated
+  location
+  submissionDate
+  withdrawnDate
+  affiliation
+  company
+  changeType
+  source
+  proposalType
+  attachments {
+    id
+    name
+    extension
+  }
+  proposedVariantPlacements {
+    id
+    name
+    proposedVariant {
+      id
+      html
+    }
+    targetVariantPlacement {
+      id
+      workId
+      publication {
+        id
+      }
+      componentOf {
+        id
+      }
+    }
+  }
+  user {
+    firstName
+    lastName
+    email
+  }
+  proposalActionHistory {
+    action
+    note
+    timestamp
+    user {
+      email
+    }
+  }
+  parentProposal {
+    id
+    proposalNumber
+    name
+  }
+}
+
+fragment WorkVariantPlacementFields on WorkVariantPlacement {
+  id
+  name
+  componentOrdering
+  isComponentContainer
+  componentOf {
+    id
+    name
+    workId
+    publicationLevel
+  }
+  publicationLevel
+  publication {
+    id
+    name
+    isDraft
+    timezone
+    collection {
+      label
+    }
+  }
+  publicationParent {
+    id
+    name
+    workId
+  }
+  isSupplementaryFile
+  conflicting
+  isContingent
+  nodeType
+  isAmendment
+  isRetroactive
+  isRepealed
+  isRenumbered
+  isVariable
+  variableNote
+  contingentNote
+  contingentStartDate
+  componentNumberingValue
+  operationalPeriod {
+    start
+    end
+  }
+  supersededPeriod {
+    start
+    end
+  }
+  labeledOperationalPeriod {
+    isAmbiguous
+    label
+  }
+  workVariant {
+    id
+    workId
+    html
+    filenameExtension
+    operationalPeriod {
+      start
+      end
+    }
+    metadata {
+      key
+      value
+    }
+  }
+}
+
+fragment PublicationFields on Publication {
+  id
+  name
+  isDraft
+  timezone
+  collection {
+    label
+  }
+}
+
+query GetDashboardProposals($limit: Int, $offset: Int, $orderBy: String, $proposalStatus__iexact: String, $exclude__proposalStatus__iexact: String, $submissionDate__exact: DateTime, $exclude__submissionDate__exact: DateTime, $submissionDate__gt: DateTime, $submissionDate__gte: DateTime, $submissionDate__lt: DateTime, $submissionDate__lte: DateTime, $submissionDate: DateTime, $lastUpdatedBefore: DateTime, $lastUpdatedAfter: DateTime, $company__iregex: String, $company__iexact: String, $company__startswith: String, $company__endswith: String, $company: String, $exclude__company: String, $affiliation__iregex: String, $affiliation__iexact: String, $affiliation__startswith: String, $affiliation__endswith: String, $affiliation: String, $exclude__affiliation: String, $source__iregex: String, $source__iexact: String, $source__startswith: String, $source__endswith: String, $source: String, $exclude__source: String) {
+  proposals(
+    proposalType: "Root"
+    orderBy: $orderBy
+    limit: $limit
+    offset: $offset
+    proposalStatus__iexact: $proposalStatus__iexact
+    exclude__proposalStatus__iexact: $exclude__proposalStatus__iexact
+    submissionDate__exact: $submissionDate__exact
+    exclude__submissionDate__exact: $exclude__submissionDate__exact
+    submissionDate__gt: $submissionDate__gt
+    submissionDate__gte: $submissionDate__gte
+    submissionDate__lt: $submissionDate__lt
+    submissionDate__lte: $submissionDate__lte
+    submissionDate: $submissionDate
+    lastUpdatedBefore: $lastUpdatedBefore
+    lastUpdatedAfter: $lastUpdatedAfter
+    company__iregex: $company__iregex
+    company__iexact: $company__iexact
+    company__startswith: $company__startswith
+    company__endswith: $company__endswith
+    company: $company
+    exclude__company: $exclude__company
+    affiliation__iregex: $affiliation__iregex
+    affiliation__iexact: $affiliation__iexact
+    affiliation__startswith: $affiliation__startswith
+    affiliation__endswith: $affiliation__endswith
+    affiliation: $affiliation
+    exclude__affiliation: $exclude__affiliation
+    source__iregex: $source__iregex
+    source__iexact: $source__iexact
+    source__startswith: $source__startswith
+    source__endswith: $source__endswith
+    source: $source
+    exclude__source: $exclude__source
+  ) {
+    count
+    items {
+      ...DashboardFields
+    }
+  }
+}
+    ${f2e}
+
+query GetProposalModifications($parentProposalIds: [UUID!]) {
+  proposals(
+    parentProposals: $parentProposalIds
+    proposalType: "Modification"
+    orderBy: "underlying_metadata__proposalSequence"
+  ) {
+    count
+    items {
+      id
+      name
+      proposalNumber
+      proposalStatus
+      proposalType
+    }
+  }
+}
+
+query GetProposalComments($parentProposalIds: [UUID!]) {
+  proposals(
+    parentProposals: $parentProposalIds
+    proposalType: "Comment"
+    orderBy: "-last_updated_version"
+  ) {
+    count
+    items {
+      id
+      name
+      proposalNumber
+      proposalStatus
+      proposalSupportingComment
+      lastUpdated
+      proposalType
+      user {
+        firstName
+        lastName
+      }
+      parentProposal {
+        id
+        name
+        proposalNumber
+      }
+    }
+  }
+}
+
+query GetProposals {
+  proposals(parentProposal: null) {
+    items {
+      ...ChangeProposalFields
+    }
+  }
+}
+    ${Pl}
+
+query GetProposalsIds {
+  proposals(
+    proposalType: "Root"
+    orderBy: "underlying_metadata__proposal_sequence"
+  ) {
+    count
+    items {
+      id
+      parentProposal {
+        id
+      }
+    }
+  }
+}
+
+query GetProposalsIdsWithTargetVariants {
+  proposals(orderBy: "underlying_metadata__proposal_sequence") {
+    items {
+      id
+      proposalStatus
+      proposalType
+      proposedVariantPlacements {
+        id
+        targetVariantPlacement {
+          workId
+          componentOrdering
+        }
+      }
+    }
+  }
+}
+
+query GetProposalById($id: UUID) {
+  proposal(id: $id) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+query GetProposalPlacements($proposalId: UUID) {
+  proposal(id: $proposalId) {
+    id
+    proposalNumber
+    proposalSupportingComment
+    proposalStatus
+    submissionDate
+    withdrawnDate
+  }
+  proposedVariantPlacements(proposal: $proposalId, orderBy: "component_ordering") {
+    items {
+      id
+      componentOrdering
+      name
+      targetVariantPlacement {
+        workId
+        id
+        componentOrdering
+        workVariant {
+          id
+        }
+      }
+      proposedVariant {
+        id
+        html
+      }
+    }
+  }
+}
+
+mutation CreateProposal($input: CreateProposalInput) {
+  createProposal(input: $input) {
+    id
+  }
+}
+
+mutation CreateProposalModification($input: CreateProposalModificationInput) {
+  createProposalModification(input: $input) {
+    id
+  }
+}
+
+mutation CreateProposalComment($input: CreateProposalCommentInput) {
+  createProposalComment(input: $input) {
+    id
+  }
+}
+
+mutation SubmitProposal($input: SubmitProposalInput) {
+  submitProposal(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation SubmitProposalModification($input: SubmitProposalModificationInput) {
+  submitProposalModification(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation SubmitProposalComment($input: SubmitProposalInput) {
+  submitProposal(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation WithdrawnProposal($input: WithdrawProposalInput) {
+  withdrawProposal(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation AcceptProposal($input: AcceptProposalInput) {
+  acceptProposal(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation RejectProposal($input: RejectProposalInput) {
+  rejectProposal(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation ReturnProposal($input: ReturnProposalInput) {
+  returnProposal(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation UpdateProposalSupportingComment($input: UpdateProposalSupportingCommentInput) {
+  updateProposalSupportingComment(input: $input) {
+    proposalSupportingComment
+  }
+}
+
+mutation EditProposalModificationName($input: EditProposalModificationNameInput) {
+  editProposalModificationName(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation RemoveProposalPlacement($input: RemoveProposalPlacementInput) {
+  removeProposalPlacement(input: $input) {
+    ...ChangeProposalFields
+  }
+}
+    ${Pl}
+
+mutation DiscardProposal($input: DiscardProposalInput) {
+  discardProposal(input: $input)
+}
+
+mutation DiscardProposalModification($input: DiscardProposalModificationInput) {
+  discardProposalModification(input: $input)
+}
+
+mutation DiscardProposalComment($input: DiscardProposalInput) {
+  discardProposal(input: $input)
+}
+
+query GetProposalInBulkEdits($proposalId: UUID) {
+  proposalInBulkEdits(proposal: $proposalId) {
+    items {
+      taskStatus
+      url
+    }
+  }
+}
+
+query GetPublications {
+  publications {
+    items {
+      ...PublicationFields
+    }
+  }
+}
+    ${XW}
+
+query GetPublicationById($publicationId: UUID) {
+  publication(id: $publicationId) {
+    ...PublicationFields
+  }
+}
+    ${XW}
+
+query GetWorkVariantPlacementsByWorkVariant($workVariantId: UUID, $asOfTimeAxis: String, $asOfTime: DateTime) {
+  placements: workVariantPlacementsByWorkVariant(
+    workVariantId: $workVariantId
+    asOfTimeAxis: $asOfTimeAxis
+    asOfTime: $asOfTime
+  ) {
+    count
+    items {
+      ...WorkVariantPlacementFields
+    }
+  }
+}
+    ${Vg}
+
+query getWorkVariantMetadata($id: UUID!, $asOfTime: DateTime) {
+  workVariantPlacementById(workVariantPlacementId: $id, asOfTime: $asOfTime) {
+    workVariant {
+      metadata {
+        field {
+          choices
+          description
+          system
+        }
+        key
+        value
+      }
+    }
+  }
+}
+
+query GetWorkVariantPlacementByWork($workId: UUID, $asOfTimeAxis: String, $asOfTime: DateTime) {
+  placement: workVariantPlacementByWork(
+    workId: $workId
+    asOfTimeAxis: $asOfTimeAxis
+    asOfTime: $asOfTime
+  ) {
+    ...WorkVariantPlacementFields
+  }
+}
+    ${Vg}
+
+query GetWorkVariantPlacementByPublication($publicationId: UUID, $asOfTimeAxis: String, $asOfTime: DateTime) {
+  placement: workVariantPlacementByPublication(
+    publicationId: $publicationId
+    asOfTimeAxis: $asOfTimeAxis
+    asOfTime: $asOfTime
+  ) {
+    ...WorkVariantPlacementFields
+  }
+}
+    ${Vg}
+
+query GetWorkVariantsByWorkId($workId: UUID!) {
+  workHistory(workId: $workId) {
+    items {
+      id
+      isAffectedByRetroactive
+      operationalPeriod {
+        start
+        end
+      }
+    }
+  }
+}
+
+query GetWorkVariantsByWork($workId: UUID, $orderBy: String) {
+  workVariants(orderBy: $orderBy, workId: $workId) {
+    items {
+      id
+      workId
+      html
+      ordering
+      operationalPeriod {
+        start
+        end
+      }
+      metadata {
+        key
+        value
+      }
+    }
+  }
+}
+
+query GetPublicationStartDate($publicationId: UUID!) {
+  publicationStartDate(publicationId: $publicationId)
+}
+
+query GetWorkVariantById($workVariantId: UUID!) {
+  workVariant(id: $workVariantId) {
+    id
+    operationalPeriod {
+      start
+      end
+    }
+  }
+}
+
+query GetWorkHistory($workId: UUID!, $publicationId: UUID) {
+  workHistory(workId: $workId, publicationId: $publicationId) {
+    count
+    items {
+      id
+      isRetroactive
+      isRepealed
+      isContingent
+      isRenumbered
+      isAmendment
+      isAffectedByRetroactive
+      isSuperseded
+      isSupplementaryFile
+      isVariable
+      variableNote
+      contingentNote
+      contingentStartDate
+      name
+      operationalPeriod {
+        start
+        end
+      }
+      labeledOperationalPeriod {
+        label
+        isAmbiguous
+      }
+      publication {
+        id
+      }
+      conflicting
+      multiple
+      workVariant {
+        id
+        issueDate
+        filenameExtension
+        operationalPeriod {
+          start
+          end
+        }
+      }
+    }
+  }
+}
+
+query GetPlacementIdByWorkId($workId: UUID!, $publicationId: UUID!, $asOfTime: DateTime) {
+  workVariantPlacementByWork(
+    workId: $workId
+    publicationId: $publicationId
+    asOfTime: $asOfTime
+  ) {
+    id
+    componentOf {
+      id
+    }
+  }
+}
+
+query GetPublicationFilters {
+  publications {
+    items {
+      id
+      name
+    }
+  }
+}
+
+query GetWorkVariantPlacementsByParent($componentOf: UUID!) {
+  workVariantPlacements(componentOf: $componentOf, orderBy: "component_ordering") {
+    items {
+      id
+      componentOf {
+        id
+        publicationLevel
+      }
+      name
+      parentId
+      publicationLevel
+      componentNumberingValue
+      workVariant {
+        id
+        workId
+        html
+      }
+    }
+  }
+}
+
+query GetBatchDiff($documentPairs: [DiffPairInput!], $workVariantPlacementPair: DiffPairInput) {
+  batchDiff(
+    documentPairs: $documentPairs
+    workVariantPlacementPair: $workVariantPlacementPair
+  ) {
+    htmlDiff
+    newDocId
+    oldDocId
+    nameDiff
+    publicationLevel
+    oldDocNumber
+    newDocNumber
+  }
+}
+
+query GetUserPermissions {
+  allowedCommands
+}
+
+query GetCurrentWorkVariantPlacementById($id: UUID!, $asOfTime: DateTime) {
+  workVariantPlacementById(workVariantPlacementId: $id, asOfTime: $asOfTime) {
+    ...WorkVariantPlacementFields
+  }
+}
+    ${Vg}
+
+query GetWorkVariantPlacementByWorkIdSlug($workIdSlug: String!) {
+  placement: workVariantPlacementByWorkIdSlug(workIdSlug: $workIdSlug) {
+    ...WorkVariantPlacementFields
+  }
+}
+    ${Vg}
+
+query GetWorkVariantPlacementByPublicationDocumentVersionSlug($publicationDocumentVersionSlug: String!) {
+  placement: workVariantPlacementByPublicationDocumentVersionSlug(
+    publicationDocumentVersionSlug: $publicationDocumentVersionSlug
+  ) {
+    ...WorkVariantPlacementFields
+  }
+}
+    ${Vg}
+
+query GetFutureEffectiveWorkVariantPlacements($publication: UUID!, $limit: Int, $offset: Int, $orderBy: String) {
+  workVariantPlacements(
+    futureEffectiveOnly: true
+    publication: $publication
+    orderBy: $orderBy
+    limit: $limit
+    offset: $offset
+    nodeTypes: [SUPPLEMENTARY_FILE, DOCUMENT_CONTAINER]
+  ) {
+    count
+    items {
+      id
+      name
+      publicationParent {
+        name
+      }
+      nodeType
+      workVariant {
+        filenameExtension
+      }
+      operationalPeriod {
+        start
+      }
+    }
+  }
+}
+
+mutation SubscribeAlertViaPlacement($input: SubscribeViaPlacementInput) {
+  subscribeViaPlacement(input: $input)
+}
+
+mutation UnsubscribeAlertViaPlacement($input: UnsubscribeViaPlacementInput) {
+  unsubscribeViaPlacement(input: $input)
+}
+
+query GetComponentOfPlacement($workVariantPlacementId: UUID) {
+  placement: workVariantPlacement(id: $workVariantPlacementId) {
+    componentOf {
+      id
+    }
+  }
+}
+
+query GetChangesDiff($firstDocId: UUID, $firstIdAsOfRevision: UUID, $secondDocId: UUID, $secondIdAsOfRevision: UUID) {
+  diff(
+    firstDocId: $firstDocId
+    firstIdAsOfRevision: $firstIdAsOfRevision
+    secondDocId: $secondDocId
+    secondIdAsOfRevision: $secondIdAsOfRevision
+  ) {
+    htmlDiff
+  }
+}

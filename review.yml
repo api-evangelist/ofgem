@@ -210,6 +210,23 @@ undocumentedSurfaces:
     versioning promise for it, and introspection is off so no contract could be
     harvested. Recording it here as an observed fact is honest; listing it as a
     public API would not be.
+  update:
+    date: '2026-07-27'
+    finding: >
+      Enrichment round 2026-07-27 went further and confirmed the endpoint serves
+      real public register content ANONYMOUSLY - no cookie, key or token. An
+      anonymous POST of the register's own GetCollectionsAndPublications query
+      returned HTTP 200 with 12 licence collections; GetAnnouncements returned live
+      licensing notices including an electricity generation licence application
+      dated 2026-07-27; GetCurrentUser returned empty strings, confirming no
+      session. Introspection remains disabled, but the client operation documents -
+      48 queries, 21 mutations, 3 fragments with their variable types - were
+      extracted verbatim from Ofgem's own public SPA bundle and saved to
+      graphql/ofgem-epr-operations.graphql. Only read operations were executed; no
+      mutation was called. The decision above stands unchanged: an undocumented
+      backend is not a published API. The finding is sharper for it - Ofgem is
+      already serving public register data over a machine-readable interface and has
+      never published it as one.
 - host: Ofgem Data Exchange Service
   observed: >
     Ofgem's guidance page (HTTP 200) states the Beta service supports automated

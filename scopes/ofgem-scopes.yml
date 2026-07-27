@@ -1,0 +1,62 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  well-known/ofgem-rer-openid-configuration.json (live OIDC discovery, HTTP 200) and
+  the Renewable Electricity Register / Electronic Public Register authorization
+  requests observed on 2026-07-27.
+docs: null
+note: >-
+  Ofgem publishes no API and therefore no developer-facing scope reference. The
+  scopes recorded here are the OAuth 2.0 / OpenID Connect scopes the two internal
+  register applications request of their own identity providers. They are not
+  grantable to third-party clients: neither register offers client registration, an
+  application route or a partner programme. This artifact exists so the auth surface
+  is recorded honestly, not because a scope catalogue is on offer.
+schemes:
+- name: RER (Renewable Electricity Register) - Azure AD B2C
+  source: well-known/ofgem-rer-openid-configuration.json
+  discovery_scopes_supported: [openid]
+  flows:
+  - flow: authorizationCode
+    pkce: true
+    authorizationUrl: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/oauth2/v2.0/authorize
+    tokenUrl: https://pk8sprdofgemcloudb2c.b2clogin.com/pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/oauth2/v2.0/token
+- name: EPR (Electronic Public Register) - AWS Cognito
+  source: https://epr.ofgem.gov.uk/ofgem-live-v4.20.31-28588873106-3-1/index.js
+  discovery_scopes_supported: null
+  flows:
+  - flow: authorizationCode
+    pkce: true
+    authorizationUrl: https://epre-api.ofgem.gov.uk/authenticate/
+    tokenUrl: https://epre-api.ofgem.gov.uk/tokens/
+scopes:
+- scope: openid
+  description: Standard OpenID Connect scope; requests an ID token.
+  flows: [authorizationCode]
+  schemes: [RER, EPR]
+  sources: [well-known/ofgem-rer-openid-configuration.json, epr bundle]
+- scope: profile
+  description: Standard OIDC claim set - name and profile claims.
+  flows: [authorizationCode]
+  schemes: [RER, EPR]
+  sources: [rer authorize request, epr bundle]
+- scope: email
+  description: Standard OIDC claim - email address. Requested by the EPR only.
+  flows: [authorizationCode]
+  schemes: [EPR]
+  sources: [epr bundle]
+- scope: offline_access
+  description: Refresh-token issuance. Requested by the RER only.
+  flows: [authorizationCode]
+  schemes: [RER]
+  sources: [rer authorize request]
+- scope: https://pk8sprdofgemcloudb2c.onmicrosoft.com/rercoreservices/user_impersonation
+  description: >-
+    Application scope for the RER core services API, delegated user impersonation.
+    Issued only to the register's own first-party client.
+  flows: [authorizationCode]
+  schemes: [RER]
+  sources: [rer authorize request]
+claims_supported:
+  rer: [name, email, oid, sub, tid, tfp, iss, iat, exp, aud, acr, nonce, auth_time]
+third_party_grants: none

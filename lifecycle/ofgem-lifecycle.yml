@@ -1,0 +1,67 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://www.ofgem.gov.uk/data/ofgem-data-upcoming-release-calendar and live probes
+  of the Ofgem estate, 2026-07-27.
+api_lifecycle:
+  applicable: false
+  detail: >-
+    Ofgem publishes no API, so there is no API versioning scheme, no deprecation
+    policy, no Sunset or Deprecation header support, no SLA and no uptime target to
+    record. Nothing below should be read as an API commitment.
+versioning:
+  scheme: null
+  current: null
+  docs: null
+deprecation:
+  policy_url: null
+  sunset_header: false
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+status_page_probe:
+  url: https://status.ofgem.gov.uk/
+  status: '000'
+  note: Does not resolve. No status page exists on any Ofgem host.
+deprecated_operations: []
+data_release_lifecycle:
+  publication_schedule: https://www.ofgem.gov.uk/data/ofgem-data-upcoming-release-calendar
+  detail: >-
+    The nearest thing Ofgem operates to a lifecycle commitment for its data is the
+    upcoming data release calendar, which announces forthcoming publication dates
+    for its market indicator datasets. It is a human-readable page, not a feed, and
+    carries no machine-readable index.
+  formats: [CSV, XLSX, PNG]
+  distribution: https://www.ofgem.gov.uk/news-and-insight/data/data-portal
+application_versioning_observed:
+  - application: Electronic Public Register
+    version: ofgem-live-v4.20.31-28588873106-3-1
+    source: >-
+      Build identifier in the SPA asset path at https://epr.ofgem.gov.uk/, observed
+      2026-07-27. An internal build tag, not a published API version.
+change_communication:
+  channels:
+  - type: RSS
+    url: https://www.ofgem.gov.uk/rss.xml
+  - type: Publications
+    url: https://www.ofgem.gov.uk/publications
+  - type: Consultations
+    url: https://www.ofgem.gov.uk/consultations
+  note: >-
+    Ofgem communicates change through statutory consultations, decisions and
+    publications rather than a product changelog. No dated API or data changelog
+    exists, so no changelog/ artifact was written.
+in_flight:
+  - name: Data Sharing Infrastructure
+    status: consultation open July 2026
+    url: https://www.ofgem.gov.uk/energy-regulation/technology-and-innovation/digitalisation
+  - name: Data Domain Coordinator role guidance
+    status: consultation open July 2026
+    url: https://www.ofgem.gov.uk/energy-regulation/technology-and-innovation/digitalisation
+  - name: Securing open data in energy - triage in Data Best Practice guidance
+    status: consultation open
+    url: https://www.ofgem.gov.uk/consultation/securing-open-data-energy-triage-data-best-practice-guidance
+  - name: Ofgem Data Exchange Service
+    status: Beta, invitation only, inbound submissions
+    url: https://www.ofgem.gov.uk/guidance/we-are-launching-our-new-data-exchange-service

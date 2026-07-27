@@ -1,0 +1,112 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  Derived from the artifacts in this repo (well-known/, authentication/, scopes/,
+  graphql/, security/) plus the 2026-07-27 probe record in review.yml. No OpenAPI
+  exists for this provider, so no spec-derived assertions are made.
+scope_note: >-
+  Ofgem publishes no API. Standards conformance is therefore assessed against what
+  Ofgem actually operates - its corporate web estate, its two register applications
+  and their identity layer - and against the energy-data standards a regulator in
+  this position might have been expected to adopt. "conforms: false" here usually
+  means "no such surface exists", which is the finding rather than a defect.
+standards:
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document anywhere. /openapi.json, /swagger.json,
+    /api-docs and the api./developer./docs. subdomains all 404 or fail to resolve
+    (review.yml probes, 2026-07-27).
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook surface of any kind is published.
+- id: graphql
+  conforms: partial
+  evidence: >-
+    A real GraphQL endpoint backs the Electronic Public Register at
+    https://epre-api.ofgem.gov.uk/graphql/ and answers anonymously, but it is
+    undocumented and introspection is disabled, so it conforms to GraphQL as an
+    implementation while publishing no schema. See graphql/ofgem-epr-graphql.yml.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Both registers use OAuth 2.0 authorization code with PKCE (AWS Cognito for the
+    EPR, Azure AD B2C for the RER). Internal application auth, not a developer API.
+- id: oidc
+  conforms: true
+  evidence: >-
+    The RER identity provider serves an OpenID Connect Discovery 1.0 document at
+    .../b2c_1a_rer_signin/v2.0/.well-known/openid-configuration (HTTP 200, saved to
+    well-known/ofgem-rer-openid-configuration.json), with jwks_uri, RS256 id tokens
+    and pairwise subjects. The EPR's Cognito domain serves no discovery document.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returned 404 on every Ofgem host probed.
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: >-
+    https://www.ofgem.gov.uk/.well-known/security.txt returns 200 with Contact,
+    Policy and Signature fields (well-known/ofgem-security.txt). The referenced
+    .sig file 404s and no Expires field is present, so the document is
+    RFC 9116-shaped but not fully compliant.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    No REST API exists. The undocumented GraphQL backend returns GraphQL-style
+    errors with a proprietary error_code field, e.g. {"error_code":"Server error"}.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No API, no versioning policy and no deprecation policy published.
+- id: llms-txt
+  conforms: false
+  evidence: https://www.ofgem.gov.uk/llms.txt returned 404.
+- id: ckan
+  conforms: false
+  evidence: >-
+    No CKAN, DKAN or OpenDataSoft endpoint. Notable by contrast: NESO and the GB
+    distribution network operators run exactly these because of Ofgem's own Data
+    Best Practice licence condition.
+- id: dcat
+  conforms: false
+  evidence: >-
+    No DCAT, data.json or catalogue metadata is served for the Ofgem Data Portal;
+    the portal is interactive charts with per-chart PNG and CSV downloads.
+- id: green-button-espi
+  conforms: false
+  evidence: >-
+    No Green Button or ESPI reference on any Ofgem surface probed. Great Britain
+    has no equivalent consumer energy-data mandate.
+- id: cdr-consumer-data-standards
+  conforms: false
+  evidence: >-
+    No CDR-equivalent exists in GB energy - no consumer data right, no accredited
+    recipient scheme, no data standards body, no register of authorised persons.
+- id: iec-cim-61968-61970
+  conforms: false
+  evidence: No IEC CIM reference found; published data is CSV, XLSX and PNG.
+- id: ieee-2030.5
+  conforms: false
+  evidence: No IEEE 2030.5 reference found.
+- id: openadr
+  conforms: false
+  evidence: No OpenADR reference found.
+- id: ocpp-ocpi
+  conforms: false
+  evidence: No OCPP or OCPI reference found.
+- id: ofgem-data-best-practice
+  conforms: partial
+  self_authored: true
+  evidence: >-
+    Ofgem authors this standard and applies it to licensees through RIIO licence
+    conditions (Data Best Practice Guidance v1.0, November 2021, twelve principles
+    built on treating Energy System Data as presumed open). Ofgem's own market data
+    is genuinely open and anonymous, satisfying "presumed open", but is published as
+    files rather than in a discoverable, interoperable, machine-readable form - so
+    the author of the standard partially meets it.
+compliance_program_published: false
+compliance_note: >-
+  No SOC 2, ISO 27001, PCI DSS, Cyber Essentials or other certification is published
+  on any Ofgem surface probed, and no trust centre exists (probe-security-programs
+  returned trust=none). As a UK non-ministerial government department Ofgem operates
+  under public-sector assurance regimes rather than commercial certifications; none
+  is asserted here because none was found published.

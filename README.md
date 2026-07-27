@@ -67,6 +67,31 @@ Ofgem's Data Best Practice licence condition works — on everyone except Ofgem.
 - [Publications](https://www.ofgem.gov.uk/publications)
 - [LinkedIn](https://www.linkedin.com/company/ofgem)
 
+## Artifacts
+
+Enrichment round 2026-07-27. Ofgem publishes no API, so there is no `openapi/`, `asyncapi/`, `mcp/`, `packages/`, `sandbox/`, `errors/` or `skills/` directory — none could be produced without fabricating one. What follows is what was actually found on the wire.
+
+| Artifact | Method | What it records |
+|---|---|---|
+| [`well-known/ofgem-well-known.yml`](well-known/ofgem-well-known.yml) | searched | Every `/.well-known/` path probed across six Ofgem-operated hosts, with status. Two documents exist in the whole estate. |
+| [`well-known/ofgem-security.txt`](well-known/ofgem-security.txt) | searched | RFC 9116 document, saved verbatim. HackerOne submission route plus the disclosure policy. |
+| [`well-known/ofgem-rer-openid-configuration.json`](well-known/ofgem-rer-openid-configuration.json) | searched | **New this round.** A live OpenID Connect discovery document, served by the Azure AD B2C tenant behind the Renewable Electricity Register. Saved verbatim. |
+| [`graphql/ofgem-epr-operations.graphql`](graphql/ofgem-epr-operations.graphql) | derived | **New this round.** The 48 queries, 21 mutations and 3 fragments the Electronic Public Register web app sends, extracted verbatim from Ofgem's own public JavaScript bundle. Server-side introspection is disabled, so the SDL itself is unobtainable. |
+| [`graphql/ofgem-epr-graphql.yml`](graphql/ofgem-epr-graphql.yml) | derived | The surface record for that endpoint, including the anonymous-read verification. |
+| [`authentication/ofgem-authentication.yml`](authentication/ofgem-authentication.yml) | searched | The identity layer in front of both registers — AWS Cognito (EPR) and Azure AD B2C (RER), both authorization code with PKCE. No public API auth exists. |
+| [`scopes/ofgem-scopes.yml`](scopes/ofgem-scopes.yml) | searched | The OAuth/OIDC scopes the register applications request of their own IdPs. Not grantable to third parties. |
+| [`conformance/ofgem-conformance.yml`](conformance/ofgem-conformance.yml) | derived | Standards assessment, including the energy data standards (Green Button/ESPI, CDR, IEC CIM, IEEE 2030.5, OpenADR, OCPP/OCPI, CKAN, DCAT) Ofgem does not use — and Ofgem's partial conformance to its own Data Best Practice guidance. |
+| [`lifecycle/ofgem-lifecycle.yml`](lifecycle/ofgem-lifecycle.yml) | searched | No API versioning, no deprecation policy, no SLA, no status page (`status.ofgem.gov.uk` does not resolve). The data release calendar is the only cadence commitment. |
+| [`security/ofgem-domain-security.yml`](security/ofgem-domain-security.yml) | probed | TLS/HSTS across four hosts, plus DNSSEC/CAA/SPF/DMARC for `ofgem.gov.uk`. HSTS is set on the corporate site and on none of the three register hosts; no DNSSEC, no CAA; DMARC `p=reject`. |
+| [`security/ofgem-vulnerability-disclosure.yml`](security/ofgem-vulnerability-disclosure.yml) | searched | security.txt-backed disclosure route. |
+| [`llms/ofgem-llms.txt`](llms/ofgem-llms.txt) | generated | Agent-facing summary. Ofgem serves no `/llms.txt` — `https://www.ofgem.gov.uk/llms.txt` returns 404. |
+
+### Round 2026-07-27 finding
+
+Two things turned up that the first pass did not have. First, a real **OpenID Connect discovery document** is live for the Renewable Electricity Register — the only machine-readable contract of any kind anywhere in Ofgem's estate, and it is served by Microsoft on Ofgem's tenant rather than by Ofgem. Second, the Electronic Public Register's GraphQL backend at `https://epre-api.ofgem.gov.uk/graphql/` **answers anonymously with real register content** — `GetCollectionsAndPublications` returned 12 licence collections and `GetAnnouncements` returned live licensing notices, with no cookie, key or token. Introspection is disabled, but the full client operation set sits in Ofgem's own public JS bundle.
+
+That surface is deliberately **not** listed as an API in `apis.yml`. Ofgem publishes no schema, no reference, no terms of use, no rate limits and no versioning promise for it, and cataloguing an undocumented application backend as a published API would misrepresent the posture this repo exists to record. The finding is sharper than "no API": Ofgem is already serving public register data over a machine-readable interface and has simply never published it as one.
+
 ## Maintainers
 
 - Kin Lane — kin@apievangelist.com

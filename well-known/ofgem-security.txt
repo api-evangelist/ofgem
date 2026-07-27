@@ -1,0 +1,3 @@
+Contact: https://hackerone.com/3b493770-9361-432c-be0d-cfc0f7f9e58e/embedded_submissions/new
+Policy: https://www.ofgem.gov.uk/report-vulnerability
+Signature: https://www.ofgem.gov.uk/.well-known/security.txt.sig

@@ -1,0 +1,78 @@
+generated: '2026-07-27'
+method: searched
+source: anonymous HTTPS probes of every Ofgem-operated host on 2026-07-27
+note: >-
+  Ofgem publishes no API, so the /.well-known/ surface is thin. Only two documents
+  exist anywhere across Ofgem's estate: the corporate site's RFC 9116 security.txt,
+  and the OpenID Connect discovery document served by the Azure AD B2C tenant that
+  fronts the Renewable Electricity Register. The Renewable Electricity Register
+  discovery document is served by Microsoft on Ofgem's tenant, not by ofgem.gov.uk.
+  The AWS Cognito domain fronting the Electronic Public Register serves no discovery
+  document. Probes that returned HTTP 200 with an HTML SPA shell are recorded as
+  false positives rather than as documents.
+hosts:
+- host: https://www.ofgem.gov.uk
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: ofgem-security.txt
+    standard: RFC 9116
+  - path: /.well-known/security.txt.sig
+    status: 404
+    note: Referenced by the Signature field in security.txt but not served.
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/change-password
+    status: 404
+  - path: /.well-known/dnt-policy.txt
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://epr.ofgem.gov.uk
+  note: Electronic Public Register single-page application.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    false_positive: true
+    note: >-
+      Returns the identical React SPA index shell (text/html), not an RFC 9116
+      document. Not saved.
+- host: https://epre-api.ofgem.gov.uk
+  note: Electronic Public Register backend (AWS Cognito hosted UI plus GraphQL).
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+- host: https://ofgem-live-portal.auth.eu-west-2.amazoncognito.com
+  note: AWS Cognito hosted sign-in domain used by the Electronic Public Register.
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: >-
+      Cognito hosted-UI domains do not serve discovery; the user-pool issuer that
+      would serve it is not published by Ofgem, so no OIDC metadata is obtainable
+      for the Electronic Public Register.
+- host: https://rer.ofgem.gov.uk
+  note: Renewable Electricity Register single-page application.
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 403
+- host: https://pk8sprdofgemcloudb2c.b2clogin.com
+  note: >-
+    Azure AD B2C tenant pk8sprdofgemcloudb2c.onmicrosoft.com, the identity provider
+    for the Renewable Electricity Register.
+  documents:
+  - path: /pk8sprdofgemcloudb2c.onmicrosoft.com/b2c_1a_rer_signin/v2.0/.well-known/openid-configuration
+    status: 200
+    file: ofgem-rer-openid-configuration.json
+    standard: OpenID Connect Discovery 1.0
+  - path: /pk8sprdofgemcloudb2c.onmicrosoft.com/v2.0/.well-known/openid-configuration
+    status: 404
+    note: Discovery is per user-flow; only the b2c_1a_rer_signin policy is served.

@@ -1,0 +1,99 @@
+generated: '2026-07-27'
+method: derived
+source: https://epr.ofgem.gov.uk/ofgem-live-v4.20.31-28588873106-3-1/index.js
+status: undocumented-application-backend
+published_by_provider: false
+endpoint: https://epre-api.ofgem.gov.uk/graphql/
+application: Electronic Public Register (https://epr.ofgem.gov.uk/)
+summary: >-
+  The Electronic Public Register - Ofgem's statutory register of gas and electricity
+  licences and licence-related documents - is a React single-page application backed
+  by a GraphQL endpoint. Ofgem publishes no schema, no reference, no terms of use, no
+  rate limits and no versioning promise for that endpoint, and server-side
+  introspection is disabled, so no contract can be harvested from the server. What
+  IS obtainable, verbatim and without fabrication, is the set of GraphQL operation
+  documents embedded in Ofgem's own public JavaScript bundle: 48 queries, 21
+  mutations and 3 fragments, with their variable types. Those documents are saved to
+  ofgem-epr-operations.graphql. This artifact records the surface as an observed
+  fact; it is deliberately NOT wired into apis.yml as an Ofgem API, because Ofgem
+  publishes it as nothing at all.
+introspection:
+  enabled: false
+  probe: 'POST {"query":"{__schema{queryType{name}}}"}'
+  response: >-
+    HTTP 200 {"data":null,"errors":[{"message":"GraphQL introspection has been
+    disabled, but the requested query contained the field '__schema'."}]}
+  verified: '2026-07-27'
+anonymous_access:
+  reachable: true
+  verified: '2026-07-27'
+  method: anonymous POST, no cookies, no Authorization header
+  probes:
+  - operation: '{__typename}'
+    status: 200
+    result: '{"data":{"__typename":"Query"}}'
+  - operation: GetCollectionsAndPublications
+    status: 200
+    result: >-
+      Returned real register content - 12 licence collections including
+      "Electricity licensing (from October 2025)" and "Smart meter licensing
+      (January 1986 to September 2025)" with publication ids and
+      lastPublishedDate values.
+  - operation: GetAnnouncements
+    status: 200
+    result: >-
+      Returned real licensing notices, e.g. "Ecostor 1 Immingham Ltd - notice of
+      application for an electricity generation licence", changeType NEW,
+      operationalPeriodStart 2026-07-27.
+  - operation: GetCurrentUser
+    status: 200
+    result: '{"data":{"currentUser":{"firstName":"","email":""}}}  (no session)'
+  - operation: GetPublicationFilters
+    status: 200
+    result: '{"data":null,"errors":[{"error_code":"Server error"}]}'
+  mutations_executed: false
+  note: >-
+    Read operations only were executed, once each. Mutations (proposal
+    create/submit/accept/reject, subscriptions, downloads) were enumerated from the
+    bundle but never called.
+operations:
+  file: ofgem-epr-operations.graphql
+  queries: 48
+  mutations: 21
+  fragments: 3
+  capability_groups:
+  - name: Register content
+    operations: [GetCollectionsAndPublications, GetPublications, GetPublicationById,
+      GetPublicationFilters, GetPublicationStartDate, GetTocNodes, GetTocSearchNodes]
+  - name: Works and variants (the licence documents themselves)
+    operations: [GetWorkVariantById, GetWorkVariantsByWork, GetWorkVariantsByWorkId,
+      GetWorkVariantPlacementByWork, GetWorkVariantPlacementByPublication, GetWorkHistory,
+      GetChangesDiff, GetBatchDiff, GetFutureEffectiveWorkVariantPlacements, getWorkVariantMetadata]
+  - name: Search
+    operations: [GetSearchData, GetSearchFacets, GetSearchableMetadataFields, GetSearchByWorkCount,
+      GetSearchByPublicationCount, GetSearchDatagridFolderItems]
+  - name: Announcements and subscriptions
+    operations: [GetAnnouncements, GetSubscriptions, GetSubscribedPlacements, SubscribeAlertViaPlacement,
+      UnsubscribeAlertViaPlacement]
+  - name: Licence-modification proposals (authenticated workflow)
+    operations: [GetProposals, GetProposalById, GetProposalDashboard, GetProposalComments,
+      CreateProposal, SubmitProposal, AcceptProposal, RejectProposal, ReturnProposal,
+      WithdrawnProposal, DiscardProposal, CreateProposalModification, SubmitProposalModification]
+  - name: Files
+    operations: [GetFolderFilesInfo, GetDatagridFolderItems, GetSupplementaryFilesDownloadUrl,
+      DownloadFilesFromFolder, CancelSupplementaryFilesDownload]
+  - name: User
+    operations: [GetCurrentUser, GetUserPermissions, UpdateUserLanguage]
+sibling_surfaces:
+- url: https://epre-api.ofgem.gov.uk/restapi/
+  status: 404
+  note: REST base referenced by the bundle; every unauthenticated path returned 404.
+- url: https://epre-api.ofgem.gov.uk/authenticate/
+  note: AWS Cognito authorization endpoint used by the application (see authentication/).
+decision: >-
+  NOT listed as an API in apis.yml. Cataloguing an undocumented application backend
+  as a published API would misrepresent Ofgem's posture, which is the whole finding
+  of this repo: the regulator that requires licensees to publish discoverable,
+  interoperable, presumed-open data ships no documented interface of its own. The
+  honest record is that a real GraphQL surface exists, anonymously returns public
+  register content, and is published as nothing.
