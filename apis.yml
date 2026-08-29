@@ -23,6 +23,17 @@ description: >-
   applications whose backends are undocumented and unpublished. Ofgem is therefore a
   regulator that demands open, discoverable, interoperable data from the industry it
   supervises while shipping none of it programmatically itself.
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - none
+  generated: '2026-08-28'
+  method: derived
 image: https://www.ofgem.gov.uk/sites/default/files/styles/uncropped_large/public/2021-06/ofgem-logo.jpg
 tags:
 - Energy
