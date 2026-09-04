@@ -34,6 +34,20 @@ deliveryModel:
   - none
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  - scopes
+  - security
+  generated: '2026-09-02'
+  method: derived
 image: https://www.ofgem.gov.uk/sites/default/files/styles/uncropped_large/public/2021-06/ofgem-logo.jpg
 tags:
 - Energy
